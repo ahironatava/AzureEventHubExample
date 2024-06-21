@@ -1,0 +1,6 @@
+@EventStreamPublisher_HostAddress = http://localhost:5163
+
+GET {{EventStreamPublisher_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

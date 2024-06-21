@@ -1,0 +1,6 @@
+@UserRequestEventPublisher_HostAddress = http://localhost:5032
+
+GET {{UserRequestEventPublisher_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,6 @@
+@EventStreamReaderCheckpoint_HostAddress = http://localhost:5036
+
+GET {{EventStreamReaderCheckpoint_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
