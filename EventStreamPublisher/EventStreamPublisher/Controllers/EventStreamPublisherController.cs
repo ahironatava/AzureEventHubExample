@@ -30,10 +30,7 @@ namespace EventStreamPublisher.Controllers
                 return;
             }
 
-            // Make a call the service for asynchronous processing of the request
-            //
-            // Set the Response status code as 202 (Accepted) before invoking the call
-            // as the object will be out of scope when the service completes the request.
+            // Make a call to the service to instigate asynchronous processing of the request
             Response.StatusCode = 202;
             _ = await _publisherService.SendNEvents(count);
             return;
