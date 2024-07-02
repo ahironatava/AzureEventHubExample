@@ -18,7 +18,7 @@ namespace EventStreamPublisher.Controllers
 
         // POST to send the specified count of events
         [HttpPost]
-        public async void Post([FromBody] string countAsString)
+        public void Post([FromBody] string countAsString)
         {
             int count;
 
@@ -31,9 +31,10 @@ namespace EventStreamPublisher.Controllers
             }
 
             // Set the Response code to 202 (Accepted) and make a call to
-            // the service to instigate asynchronous processing of the request
+            // the service to instigate asynchronous processing of the request,
+            // without waiting for it to complete
             Response.StatusCode = 202;
-            _ = await _publisherService.SendNEvents(count);
+            _ = _publisherService.SendNEvents(count);
             return;
         }
     }

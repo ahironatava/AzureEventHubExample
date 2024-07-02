@@ -18,7 +18,7 @@ namespace UserRequestEventPublisher.Controllers
         }
 
         [HttpPost]
-        public async void SendEvent([FromBody] UserRequest userRequest)
+        public void SendEvent([FromBody] UserRequest userRequest)
         {
             _logger.LogInformation("Received request from client {ClientId} for request {RequestId} of type {RequestType}", userRequest.UserId, userRequest.RequestId, userRequest.RequestType);
 
@@ -28,10 +28,10 @@ namespace UserRequestEventPublisher.Controllers
                 return;
             }
 
-            await _requestPublisherService.ProcessRequest(userRequest);
+            // Call the service asynchronous method but do not wait for it to complete
+            _ = _requestPublisherService.ProcessRequest(userRequest);
 
             Response.StatusCode = 200;
-
 
             return;
         }
