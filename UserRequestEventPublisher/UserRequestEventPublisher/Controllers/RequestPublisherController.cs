@@ -29,9 +29,8 @@ namespace UserRequestEventPublisher.Controllers
             }
 
             // Call the service asynchronous method but do not wait for it to complete
+            Response.StatusCode = 202;
             _ = _requestPublisherService.ProcessRequest(userRequest);
-
-            Response.StatusCode = 200;
 
             return;
         }
