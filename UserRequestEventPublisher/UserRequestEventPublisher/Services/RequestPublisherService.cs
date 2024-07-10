@@ -13,6 +13,9 @@ namespace UserRequestEventPublisher.Services
         private EventHubProducerClient _ehProducerClient;
         private SendEventOptions _sendEventOptions;
 
+        private string _defaultPartitionId = "0";
+
+
         public RequestPublisherService(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -29,24 +32,26 @@ namespace UserRequestEventPublisher.Services
 
             // Set the Event Hub Partition ID to send the event to
             string? hubpartitionid = _configuration["eh_partition_id"];
-            if (string.IsNullOrWhiteSpace(hubpartitionid))
+            int count;
+            if (!string.IsNullOrWhiteSpace(hubpartitionid)
+                && int.TryParse(hubpartitionid, out count))
             {
-                hubpartitionid = "0";
+                _defaultPartitionId = hubpartitionid;
             }
-            _sendEventOptions = new SendEventOptions { PartitionId = hubpartitionid };
+            _sendEventOptions = new SendEventOptions { PartitionId = _defaultPartitionId };
         }
 
         public async Task ProcessRequest(UserRequest userRequest)
         {
             // Demonstrate use of specifying partition to use:
-            // If the RequestType is "sell" then use partion 1, otherwise use partition 0
+            // If the RequestType is "sell" then use partion 1, otherwise use partition 0 (_defaultPartitionId)
             if (string.Equals(userRequest.RequestType.ToLower(), "sell"))
             {
                 _sendEventOptions.PartitionId = "1";
             }
             else
             {
-                _sendEventOptions.PartitionId = "0";
+                _sendEventOptions.PartitionId = _defaultPartitionId;
             }
             var requestAsJson = JsonSerializer.Serialize(userRequest);
             var eventBody = new BinaryData(requestAsJson);
