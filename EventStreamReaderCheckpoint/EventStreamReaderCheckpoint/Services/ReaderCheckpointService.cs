@@ -71,11 +71,11 @@ namespace EventStreamReaderCheckpoint.Services
         {
             // Create the Blob Container Client
             string? storageAccconnStr = configuration["storageacc_connstr"];
-            string? blobContainerName = configuration["blobname"];
+            string? blobContainerName = configuration["blobcontainername"];
 
             if (string.IsNullOrWhiteSpace(storageAccconnStr) || string.IsNullOrWhiteSpace(blobContainerName))
             {
-                throw new ArgumentException("Storage Account and Blob Name must be provided.");
+                throw new ArgumentException("Storage Account and Blob Container Name must be provided.");
             }
 
             return new BlobContainerClient(storageAccconnStr, blobContainerName);
@@ -84,18 +84,18 @@ namespace EventStreamReaderCheckpoint.Services
         private EventProcessorClient CreateEventProcessorClient(IConfiguration configuration, BlobContainerClient blobContainerClient)
         {
             string? consumerGroupName = _configuration["consumergroup"];
-            string? hubNamesapce = _configuration["ehns_connstring"];
+            string? hubNamespace = _configuration["ehns_connstring"];
             string? hubName = _configuration["eh_name"];
 
-            if (string.IsNullOrWhiteSpace(hubNamesapce) || string.IsNullOrWhiteSpace(hubName))
+            if (string.IsNullOrWhiteSpace(hubNamespace) || string.IsNullOrWhiteSpace(hubName))
             {
-                throw new ArgumentException("Event Hub Namespace and Hub NAme must be provided.");
+                throw new ArgumentException("Event Hub Namespace and Hub Name must be provided.");
             }
 
             EventProcessorClient ehProcessorClient = new EventProcessorClient(
                                         blobContainerClient,
                                         consumerGroupName,
-                                        hubNamesapce,
+                                        hubNamespace,
                                         hubName);
 
             // Register Processor Client handlers for events and errors
