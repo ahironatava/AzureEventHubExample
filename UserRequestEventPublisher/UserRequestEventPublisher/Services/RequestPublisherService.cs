@@ -57,7 +57,7 @@ namespace UserRequestEventPublisher.Services
             var eventBody = new BinaryData(requestAsJson);
 
             var eventData = new EventData(eventBody);
-            eventData.Properties["EventType"] = "UserRequest";
+            eventData.Properties["EventType"] = "UserRequest"; // Support consumer filtering on EventType
 
             var eventList = new List<EventData> { eventData };
             await _ehProducerClient.SendAsync(eventList, _sendEventOptions);
